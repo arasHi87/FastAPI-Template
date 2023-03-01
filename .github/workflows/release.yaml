@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  push:
+    branches:
+    - master
+  workflow_run:
+    workflows: ["Integration"]
+    types:
+      - completed
+
+jobs:
+  delivery:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Repository checkout
+        uses: actions/checkout@v2
+
+      - name: Login to Github Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and publish container image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ghcr.io/arashi87/fastapi:latest
+
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: latest
+          prerelease: true
+          title: Latest Build
+  
+  deploy:
+    needs: delivery
+    runs-on: ubuntu-20.04
+    
+    steps:
+      - uses: actions/checkout@v1
+      - name: 'Deploy'
+        uses: WyriHaximus/github-action-helm3@v2
+        with:
+          exec: helm upgrade -n fastapi-template fastapi ./deploy/helm/ -f ./deploy/values.yaml
+          kubeconfig: '${{ secrets.KUBE_CONFIG }}'

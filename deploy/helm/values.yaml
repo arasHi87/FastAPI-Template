@@ -1,0 +1,55 @@
+# Default values for deploy.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/arashi87/fastapi
+  pullPolicy: IfNotPresent
+  tag: latest
+
+nameOverride: "fastapi-template"
+fullnameOverride: "fastapi-template"
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8000
+
+resources: {}
+  # requests:
+  #   cpu: 256m
+  #   memory: 1Gi
+  # limits:
+  #   cpu: 512m
+  #   memory: 2Gi
+
+livenessProbe: {}
+  # httpGet:
+  #   path: /api/health
+  #   port: 8000
+  # initialDelaySeconds: 3
+  # periodSeconds: 5
+  # timeoutSeconds: 3
+
+readinessProbe: {}
+  # httpGet:
+  #   path: /api/health
+  #   port: 8000
+  # initialDelaySeconds: 3
+  # periodSeconds: 5
+  # timeoutSeconds: 3
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  cpu:
+    enabled: true
+    type: Utilization
+    averageUtilization: 60
+  memory:
+    enabled: true
+    type: Utilization
+    averageUtilization: 60

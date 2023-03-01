@@ -1,0 +1,8 @@
+##############################
+# APP enviroment setting     #
+##############################
+APP_TITLE=
+APP_DESCRIPTION=
+APP_VERSION=
+APP_OPENAPI_URL=
+APP_PREFIX=
