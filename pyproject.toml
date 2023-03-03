@@ -11,6 +11,11 @@ python-dotenv = "0.21.0"
 fastapi = "0.85.0"
 uvicorn = {version = "0.18.3", extras = ["standard"]}
 loguru = "0.6.0"
+SQLAlchemy = "1.4.41"
+alembic = "1.9.4"
+asyncpg = "0.27.0"
+greenlet = "2.0.2"
+psycopg2-binary = "2.9.5"
 
 [tool.poetry.dev-dependencies]
 pre-commit = "2.20.0"

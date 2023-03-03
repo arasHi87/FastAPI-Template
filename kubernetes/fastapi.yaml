@@ -1,0 +1,30 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: demo.ccns.moe
+  namespace: fastapi-template
+spec:
+  dnsNames:
+    - demo.ccns.moe
+  secretName: demo.ccns.moe
+  issuerRef:
+    name: ccns-letsencrypt-prod
+    kind: ClusterIssuer
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: demo-site
+  namespace: fastapi-template
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`demo.ccns.moe`)
+      kind: Rule
+      services:
+        - name: fastapi
+          port: 80
+  tls:
+    secretName: demo.ccns.moe

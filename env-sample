@@ -6,3 +6,12 @@ APP_DESCRIPTION=
 APP_VERSION=
 APP_OPENAPI_URL=
 APP_PREFIX=
+
+##############################
+# DB environment setting     #
+##############################
+POSTGRES_DB=
+POSTGRES_HOST=
+POSTGRES_PORT=
+POSTGRES_USER=
+POSTGRES_PASSWORD=
