@@ -466,7 +466,7 @@ toml = "*"
 virtualenv = ">=20.0.8"
 
 [[package]]
-name = "psycopg2"
+name = "psycopg2-binary"
 version = "2.9.5"
 description = "psycopg2 - Python-PostgreSQL Database Adapter"
 category = "main"
@@ -792,7 +792,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-co
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "29547787b23ee0fea82011f757bb586dd458d1ddaea8fd6b32f49dee20326608"
+content-hash = "36d6d568ab670c0d193b20100aa15a5e4ed88296bfa2dc5d3d4f5eeb072762f5"
 
 [metadata.files]
 alembic = []
@@ -840,7 +840,7 @@ pbr = []
 platformdirs = []
 pluggy = []
 pre-commit = []
-psycopg2 = []
+psycopg2-binary = []
 py = []
 pycodestyle = []
 pydantic = []
