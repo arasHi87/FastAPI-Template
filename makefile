@@ -7,6 +7,12 @@ init: clean
 	poetry env use python3.8 
 	poetry install 
 
+migrate:
+	poetry run alembic -c api/alembic.ini upgrade head
+
+revision:
+	poetry run alembic -c api/alembic.ini revision --autogenerate -m "${MESSAGE}"
+
 lint:
 	poetry run flake8 ${APP}
 
