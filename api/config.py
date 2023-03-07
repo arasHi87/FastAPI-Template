@@ -23,7 +23,7 @@ class Config:
 
     POSTGRES_DB = _getenv("POSTGRES_DB", "fastapi-template")
     POSTGRES_HOST = _getenv("POSTGRES_HOST", "localhost")
-    POSTGRES_PORT = _getenv("POSTGRES_PORT", "5432")
+    POSTGRES_PORT = _getenv("POSTGRES_PORT", 5432)
     POSTGRES_USER = _getenv("POSTGRES_USER", "m3ow87")
     POSTGRES_PASSWORD = _getenv("POSTGRES_PASSWORD", "m3ow87")
     BASE_DB_URL = f"://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
