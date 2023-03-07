@@ -15,7 +15,7 @@ def _getenv(key: str, default: str = None) -> str:
 class Config:
     APP_TITLE = _getenv("APP_TITLE", "fastapi template")
     APP_DESCRIPTION = _getenv(
-        "APP_DESCRIPTION", "A simple templae for fastapi and complete workflow"
+        "APP_DESCRIPTION", "A simple template for fastapi and complete workflow"
     )
     APP_VERSION = _getenv("APP_VERSION", "0.1.0")
     APP_OPENAPI_URL = _getenv("APP_OPENAPI_URL", "/openapi.json")
