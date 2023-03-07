@@ -6,6 +6,15 @@ jobs:
   integration:
     runs-on: ubuntu-20.04
     container: python:3.8.11-slim
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_DB: m3ow87
+          POSTGRES_USERNAME: m3ow87
+          POSTGRES_PASSWORD: m3ow87
+          POSTGRES_HOST_AUTH_METHOD: trust
   
     steps:
       - name: Install container dependencies
