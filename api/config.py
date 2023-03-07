@@ -34,3 +34,5 @@ class Config:
         if driver not in driver_list:
             raise ValueError(f"Driver must be one of {driver_list}")
         return f"{driver}{Config.BASE_DB_URL}"
+
+    PASSWORD_SALT = _getenv("PASSWORD_SALT", "m3ow87")

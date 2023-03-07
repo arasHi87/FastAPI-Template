@@ -15,3 +15,8 @@ POSTGRES_HOST=
 POSTGRES_PORT=
 POSTGRES_USER=
 POSTGRES_PASSWORD=
+
+##############################
+# User setting               #
+##############################
+PASSWORD_SALT=
