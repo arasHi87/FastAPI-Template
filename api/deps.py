@@ -1,17 +1,13 @@
-from typing import Generator
-
 from db import ASYNC_SESSION
 from loguru import logger
-from sqlalchemy.orm.session import Session
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
-async def get_db() -> Generator:
+async def get_db() -> AsyncSession:
     try:
-        db: Session = ASYNC_SESSION()
-        yield db
-        db.commit()
-    except Exception as err:
-        db.rollback()
+        async with ASYNC_SESSION() as db:
+            yield db
+    except SQLAlchemyError as err:
+        await db.rollback()
         logger.error(err)
-    finally:
-        db.close()
