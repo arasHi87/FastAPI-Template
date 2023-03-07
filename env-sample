@@ -1,22 +1,22 @@
 ##############################
-# APP environment setting     #
+# APP environment setting    #
 ##############################
-APP_TITLE=
-APP_DESCRIPTION=
-APP_VERSION=
-APP_OPENAPI_URL=
-APP_PREFIX=
+APP_TITLE=fastapi template
+APP_DESCRIPTION=A simple template for fastapi and complete workflow
+APP_VERSION=0.1.0
+APP_OPENAPI_URL=/openapi.json
+APP_PREFIX=/api
 
 ##############################
 # DB environment setting     #
 ##############################
-POSTGRES_DB=
-POSTGRES_HOST=
-POSTGRES_PORT=
-POSTGRES_USER=
-POSTGRES_PASSWORD=
+POSTGRES_DB=fastapi-template
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_USER=m3ow87
+POSTGRES_PASSWORD=m3ow87
 
 ##############################
 # User setting               #
 ##############################
-PASSWORD_SALT=
+PASSWORD_SALT=m3ow87
