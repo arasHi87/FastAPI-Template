@@ -11,8 +11,7 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_DB: m3ow87
-          POSTGRES_USERNAME: m3ow87
+          POSTGRES_DB: fastapi-template
           POSTGRES_PASSWORD: m3ow87
           POSTGRES_HOST_AUTH_METHOD: trust
   
