@@ -34,3 +34,8 @@ class UserDB(UserBase):
 # Properties to return to client
 class User(UserDB):
     pass
+
+
+class UserWithoutPassword(UserDB):
+    class Config:
+        fields = {"password": {"exclude": True}}
