@@ -15,6 +15,7 @@ POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
 POSTGRES_USER=m3ow87
 POSTGRES_PASSWORD=m3ow87
+POSTGRES_TEST_PORT=5432
 
 ##############################
 # User setting               #
