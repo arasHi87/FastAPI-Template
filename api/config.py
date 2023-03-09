@@ -1,4 +1,5 @@
 import os
+import sys
 
 from dotenv import load_dotenv
 
@@ -26,13 +27,27 @@ class Config:
     POSTGRES_PORT = _getenv("POSTGRES_PORT", 5432)
     POSTGRES_USER = _getenv("POSTGRES_USER", "m3ow87")
     POSTGRES_PASSWORD = _getenv("POSTGRES_PASSWORD", "m3ow87")
-    BASE_DB_URL = f"://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
+    POSTGRES_TEST_PORT = _getenv("POSTGRES_TEST_PORT", 5433)
 
     @staticmethod
     def get_db_url(driver: str = "postgresql") -> str:
+        # Decide which driver to use
         driver_list = ["postgresql", "postgresql+asyncpg"]
         if driver not in driver_list:
             raise ValueError(f"Driver must be one of {driver_list}")
-        return f"{driver}{Config.BASE_DB_URL}"
+
+        # Decide which port to use
+        port = Config.POSTGRES_PORT
+        if any("pytest" in arg for arg in sys.argv):
+            port = Config.POSTGRES_TEST_PORT
+
+        # Build url
+        url = (
+            f"{driver}://"
+            f"{Config.POSTGRES_USER}:{Config.POSTGRES_PASSWORD}@"
+            f"{Config.POSTGRES_HOST}:{port}/"
+            f"{Config.POSTGRES_DB}"
+        )
+        return url
 
     PASSWORD_SALT = _getenv("PASSWORD_SALT", "m3ow87")
