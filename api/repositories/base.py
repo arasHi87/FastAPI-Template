@@ -1,4 +1,4 @@
-from typing import Generic, Type, TypeVar
+from typing import Generic, Optional, Type, TypeVar
 
 from models.base import Base
 from pydantic import BaseModel
@@ -24,5 +24,5 @@ class BaseRepository(Generic[Model]):
         await db.refresh(db_obj)
         return db_obj
 
-    async def get(self, db: AsyncSession, id: int):
+    async def get(self, db: AsyncSession, id: int) -> Optional[Model]:
         return await db.get(self.model, id)
