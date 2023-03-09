@@ -25,6 +25,7 @@ CREATE_USER = {
     status_code=status.HTTP_201_CREATED,
     responses=CREATE_USER,
     response_model=schemas.User,
+    name="user:create_user",
 )
 async def create_user(payload: schemas.UserCreate, db: AsyncSession = Depends(get_db)):
     # Check if user already exists
