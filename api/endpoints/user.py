@@ -42,14 +42,9 @@ async def create_user(payload: schemas.UserCreate, db: AsyncSession = Depends(ge
 
 
 GET_USER = {
-    201: {
-        "description": "User created successfully",
-        "content": {
-            "json": [
-                {"id": 1, "name": "m3ow87", "email": "m3ow87@gmail.com"},
-                {"id": 2, "name": "arashi87", "email": "arashi87@gmail.com"},
-            ]
-        },
+    200: {
+        "description": "User found",
+        "content": {"json": {"id": 1, "name": "m3ow87", "email": "m3ow87@gmail.com"}},
     },
     404: {
         "description": "User not found",
