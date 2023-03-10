@@ -18,6 +18,12 @@ class UserCreate(UserBase):
     pass
 
 
+# Properties to receive on user update
+class UserUpdate(UserBase):
+    new_password: str
+    pass
+
+
 """
 Database schemas for User
 """

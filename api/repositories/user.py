@@ -2,20 +2,21 @@ import hashlib
 from typing import Optional
 
 from config import Config
-from schemas.user import User
+from fastapi import HTTPException, status
+from schemas.user import User, UserCreate, UserUpdate
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from .base import BaseRepository
 
 
-class UserRepository(BaseRepository[User]):
-    async def _get_hash_password(self, password: str) -> str:
+class UserRepository(BaseRepository[User, UserCreate, UserUpdate]):
+    def _get_hash_password(self, password: str) -> str:
         salt_pass = "".join([password, Config.PASSWORD_SALT])
         return hashlib.md5(salt_pass.encode()).hexdigest()
 
-    async def create(self, db: AsyncSession, user: User) -> User:
-        user.password = await self._get_hash_password(user.password)
+    async def create(self, db: AsyncSession, user: UserCreate) -> User:
+        user.password = self._get_hash_password(user.password)
         db_obj = self.model(**user.dict())
         db.add(db_obj)
         await db.commit()
@@ -25,3 +26,20 @@ class UserRepository(BaseRepository[User]):
     async def get_by_email(self, db: AsyncSession, email: str) -> Optional[User]:
         result = await db.execute(select(self.model).where(self.model.email == email))
         return result.scalars().first()
+
+    async def update(self, db: AsyncSession, user: UserUpdate, db_obj: User) -> User:
+        # Check password
+        user.password = self._get_hash_password(user.password)
+        if not user.password == db_obj.password:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Wrong password"
+            )
+
+        # Update data
+        user.password = self._get_hash_password(user.new_password)
+        for field in user.dict():
+            setattr(db_obj, field, getattr(user, field))
+        db.add(db_obj)
+        await db.commit()
+        await db.refresh(db_obj)
+        return db_obj

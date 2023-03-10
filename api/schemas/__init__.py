@@ -1,2 +1,2 @@
 from .msg import Msg
-from .user import User, UserCreate, UserWithoutPassword
+from .user import User, UserCreate, UserUpdate, UserWithoutPassword

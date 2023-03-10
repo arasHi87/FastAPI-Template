@@ -68,3 +68,48 @@ async def get_user(user_id: int, db: AsyncSession = Depends(get_db)):
         )
 
     return user
+
+
+UPDATE_USER = {
+    200: {
+        "description": "User updated successfully",
+        "content": {"json": {"id": 1, "name": "m3ow87", "email": "m3ow87@gmail.com"}},
+    },
+    400: {
+        "description": "Email already exists or wrong password",
+        "content": {"json": ["Email already exists", "Wrong password"]},
+    },
+    404: {
+        "description": "User not found",
+        "content": {"json": {"detail": "User not found"}},
+    },
+}
+
+
+@router.put(
+    "/{user_id}",
+    status_code=status.HTTP_200_OK,
+    responses=UPDATE_USER,
+    response_model=schemas.UserWithoutPassword,
+    name="user:update_user",
+)
+async def update_user(
+    user_id: int, payload: schemas.UserUpdate, db: AsyncSession = Depends(get_db)
+):
+    # check if user exists
+    user: Optional[User] = await user_repo.get(db, user_id)
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+        )
+
+    # check if email already exists
+    mail_check: Optional[User] = await user_repo.get_by_email(db, payload.email)
+    if mail_check is not None and mail_check.id != user_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Email already exists"
+        )
+
+    # update user
+    user = await user_repo.update(db, payload, user)
+    return user
