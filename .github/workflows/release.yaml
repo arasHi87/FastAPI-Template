@@ -4,10 +4,6 @@ on:
   push:
     branches:
     - master
-  workflow_run:
-    workflows: ["Integration"]
-    types:
-      - completed
 
 jobs:
   delivery:
