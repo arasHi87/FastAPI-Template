@@ -2,7 +2,9 @@ from typing import Generic, Optional, Type, TypeVar
 
 from models.base import Base
 from pydantic import BaseModel
+from sqlalchemy import and_, false
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 
 Model = TypeVar("Model", bound=Base)
 CreateModel = TypeVar("CreateModel", bound=BaseModel)
@@ -25,7 +27,12 @@ class BaseRepository(Generic[Model, CreateModel, UpdateModel]):
         return db_obj
 
     async def get(self, db: AsyncSession, id: int) -> Optional[Model]:
-        return await db.get(self.model, id)
+        result = await db.execute(
+            select(self.model).where(
+                and_(self.model.id == id, self.model.deleted == false())
+            )
+        )
+        return result.scalars().first()
 
     async def update(
         self, db: AsyncSession, obj_in: UpdateModel, db_obj: Model
@@ -37,3 +44,9 @@ class BaseRepository(Generic[Model, CreateModel, UpdateModel]):
         await db.commit()
         await db.refresh(db_obj)
         return db_obj
+
+    async def delete(self, db: AsyncSession, db_obj: Model):
+        db_obj.deleted = True
+        db.add(db_obj)
+        await db.commit()
+        await db.refresh(db_obj)
