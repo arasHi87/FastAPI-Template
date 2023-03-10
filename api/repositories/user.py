@@ -4,6 +4,7 @@ from typing import Optional
 from config import Config
 from fastapi import HTTPException, status
 from schemas.user import User, UserCreate, UserUpdate
+from sqlalchemy import false
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
@@ -24,7 +25,11 @@ class UserRepository(BaseRepository[User, UserCreate, UserUpdate]):
         return db_obj
 
     async def get_by_email(self, db: AsyncSession, email: str) -> Optional[User]:
-        result = await db.execute(select(self.model).where(self.model.email == email))
+        result = await db.execute(
+            select(self.model).where(
+                self.model.email == email and self.model.deleted == false()
+            )
+        )
         return result.scalars().first()
 
     async def update(self, db: AsyncSession, user: UserUpdate, db_obj: User) -> User:
