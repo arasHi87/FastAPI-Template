@@ -1,8 +1,10 @@
+import pytest
 from config import Config
 from fastapi.testclient import TestClient
 
 
-def test_health(client: TestClient) -> None:
+@pytest.mark.notableinit
+async def test_health(client: TestClient) -> None:
     r = client.get(f"{Config.APP_PREFIX}/health")
     resp = r.json()
 

@@ -19,6 +19,7 @@ GET_HEALTH = {
     status_code=status.HTTP_200_OK,
     responses=GET_HEALTH,
     response_model=schemas.Msg,
+    name="health:get_health",
 )
 def get_health() -> Any:
     return schemas.Msg(detail="Service healthy")
