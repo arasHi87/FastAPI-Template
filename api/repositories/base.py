@@ -13,7 +13,7 @@ Base CRUD class for all models
 """
 
 
-class BaseRepository(Generic[Model]):
+class BaseRepository(Generic[Model, CreateModel, UpdateModel]):
     def __init__(self, model: Type[Model]):
         self.model = model
 
@@ -26,3 +26,14 @@ class BaseRepository(Generic[Model]):
 
     async def get(self, db: AsyncSession, id: int) -> Optional[Model]:
         return await db.get(self.model, id)
+
+    async def update(
+        self, db: AsyncSession, obj_in: UpdateModel, db_obj: Model
+    ) -> Model:
+        # Update data
+        for field in obj_in.dict():
+            setattr(db_obj, field, getattr(obj_in, field))
+        db.add(db_obj)
+        await db.commit()
+        await db.refresh(db_obj)
+        return db_obj
