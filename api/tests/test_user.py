@@ -20,7 +20,7 @@ async def test_create_user_success(app: FastAPI):
         body={
             "name": "test",
             "email": "test@gmail.com",
-            "password": "7ec56ba8121cc89a1b3d84b4cfa0f2ed",
+            "password": "81a664d9a747c84c31e6217f3a47f59fb5fde8b721bbd5af866038af34f7b886",
             "id": 2,
         },
     )
