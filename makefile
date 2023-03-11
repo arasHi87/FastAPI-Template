@@ -17,7 +17,7 @@ lint:
 	poetry run flake8 ${APP}
 
 analysis:
-	poetry run bandit ${APP}
+	poetry run bandit -r ${APP}/** -c pyproject.toml
 
 format:
 	poetry run black ${APP}

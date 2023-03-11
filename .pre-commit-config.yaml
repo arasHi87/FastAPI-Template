@@ -20,3 +20,10 @@ repos:
       entry: make lint
       language: system
       always_run: true
+  - repo: local
+    hooks:
+    - id: test
+      name: Code testing
+      entry: make test
+      language: system
+      always_run: true
