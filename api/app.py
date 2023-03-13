@@ -28,8 +28,7 @@ async def log_request(request: Request):
     logger.info(
         f"[{request.client.host}:{request.client.host}] {request.method} {request.url}"
     )
-    logger.info(f"header: {request.headers}, body: ")
-    logger.info(await request.body())
+    logger.info(f"header: {request.headers}")
 
 
 # Log response status code and body
