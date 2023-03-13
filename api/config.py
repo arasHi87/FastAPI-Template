@@ -50,4 +50,4 @@ class Config:
         )
         return url
 
-    PASSWORD_SALT = _getenv("PASSWORD_SALT", "m3ow87")
+    SECRET_KEY = _getenv("SECRET_KEY", "m3ow87")

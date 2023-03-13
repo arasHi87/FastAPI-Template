@@ -13,7 +13,7 @@ from .base import BaseRepository
 
 class UserRepository(BaseRepository[User, UserCreate, UserUpdate]):
     def _get_hash_password(self, password: str) -> str:
-        salt_pass = "".join([password, Config.PASSWORD_SALT])
+        salt_pass = "".join([password, Config.SECRET_KEY])
         return hashlib.sha256(salt_pass.encode()).hexdigest()
 
     async def create(self, db: AsyncSession, user: UserCreate) -> User:

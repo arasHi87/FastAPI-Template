@@ -18,6 +18,6 @@ POSTGRES_PASSWORD=m3ow87
 POSTGRES_TEST_PORT=5432
 
 ##############################
-# User setting               #
+# Core setting               #
 ##############################
-PASSWORD_SALT=m3ow87
+SECRET_KEY=m3ow87
