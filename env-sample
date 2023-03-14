@@ -21,3 +21,5 @@ POSTGRES_TEST_PORT=5432
 # Core setting               #
 ##############################
 SECRET_KEY=m3ow87
+ACCESS_TOKEN_EXPIRE_MINUTES=11520
+ACCESS_TOKEN_ALGORITHM=HS256

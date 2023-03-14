@@ -51,3 +51,6 @@ class Config:
         return url
 
     SECRET_KEY = _getenv("SECRET_KEY", "m3ow87")
+    # 60 minutes * 24 hours * 8 days = 8 days
+    ACCESS_TOKEN_EXPIRE_MINUTES = _getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60 * 24 * 8)
+    ACCESS_TOKEN_ALGORITHM = _getenv("ACCESS_TOKEN_ALGORITHM", "HS256")
