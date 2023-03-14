@@ -1,3 +1,7 @@
+[![CI](https://github.com/arashi87/fastapi-template/actions/workflows/integration.yaml/badge.svg)](https://github.com/arashi87/fastapi-template/actions/workflows/integration.yaml)
+[![CD](https://github.com/arashi87/fastapi-template/actions/workflows/release.yaml/badge.svg)](https://github.com/arashi87/fastapi-template/actions/workflows/release.yaml)
+![Coverage](https://github.com/arashi87/fastapi-template/blob/master/coverage.svg)
+
 # FastAPI Template
 
 A simple fastapi template, using postgresql as database.
