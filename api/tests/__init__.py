@@ -1,10 +1,18 @@
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, Mapping, Optional
 
+import schemas
 from fastapi import FastAPI
 from httpx import AsyncClient, Response
 from starlette.datastructures import URLPath
 from utils import create_access_token
+
+DEFAULT_USER = schemas.UserWithoutPassword(
+    id=1,
+    name="default",
+    email="default@gmail.com",
+    password="default",
+)
 
 
 @dataclass
@@ -21,12 +29,7 @@ class ResponseBody:
 
 class AssertRequest:
     def __init__(self):
-        claims = {
-            "id": 1,
-            "name": "default",
-            "email": "default@gmail.com",
-            "exp": "123",
-        }
+        claims = {**DEFAULT_USER.dict(), "exp": 123}
         self.header = {"Authorization": f"Bearer {create_access_token(claims=claims)}"}
 
     async def __call__(

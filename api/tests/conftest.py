@@ -11,6 +11,7 @@ from fastapi.testclient import TestClient
 from models.base import Base
 from models.user import User
 from repositories.user import UserRepository
+from tests import DEFAULT_USER
 
 user_repo = UserRepository(User)
 
@@ -45,7 +46,9 @@ async def init_table(request):
     # insert default data for user
     async with session() as conn:
         user = schemas.UserCreate(
-            name="default", email="default@gmail.com", password="default"
+            name=DEFAULT_USER.name,
+            email=DEFAULT_USER.email,
+            password=DEFAULT_USER.password,
         )
         await user_repo.create(conn, user)
     pass

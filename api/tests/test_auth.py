@@ -5,7 +5,7 @@ from config import Config
 from fastapi import FastAPI
 from httpx import Response
 from jose import jwt
-from tests import RequestBody, ResponseBody, assert_request
+from tests import DEFAULT_USER, RequestBody, ResponseBody, assert_request
 
 """ Test user authentication endpoint
 @router post /auth/
@@ -26,8 +26,8 @@ def _test_user_auth_success_assert(resp: Response, expected_resp: ResponseBody):
     assert resp.status_code == expected_resp.status_code
     assert resp.json()["token_type"] == expected_resp.body["token_type"]
     assert payload["id"] == 1
-    assert payload["name"] == "default"
-    assert payload["email"] == "default@gmail.com"
+    assert payload["name"] == DEFAULT_USER.name
+    assert payload["email"] == DEFAULT_USER.email
 
 
 async def test_user_auth_success(app: FastAPI):
@@ -44,8 +44,8 @@ async def test_user_auth_success(app: FastAPI):
         assert_func=_test_user_auth_success_assert,
         data={
             "grant_type": "",
-            "username": "default@gmail.com",
-            "password": "default",
+            "username": DEFAULT_USER.email,
+            "password": DEFAULT_USER.password,
             "scope": "",
             "client_id": "",
             "client_secret": "",
@@ -58,7 +58,7 @@ async def test_user_auth_success(app: FastAPI):
     [
         {
             "grant_type": "",
-            "username": "default@gmail.com",
+            "username": DEFAULT_USER.email,
             "password": "meow",
             "scope": "",
             "client_id": "",
@@ -67,7 +67,7 @@ async def test_user_auth_success(app: FastAPI):
         {
             "grant_type": "",
             "username": "meow@gmail.com",
-            "password": "default",
+            "password": DEFAULT_USER.password,
             "scope": "",
             "client_id": "",
             "client_secret": "",
