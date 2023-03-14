@@ -1,5 +1,5 @@
 from config import Config
-from endpoints import health, user
+from endpoints import auth, health, user
 from fastapi import APIRouter, Depends, FastAPI
 from fastapi.requests import Request
 from fastapi.responses import Response
@@ -15,6 +15,7 @@ APP = FastAPI(
 ROUTER = APIRouter()
 ROUTER.include_router(health.router, prefix="/health", tags=["health"])
 ROUTER.include_router(user.router, prefix="/user", tags=["user"])
+ROUTER.include_router(auth.router, prefix="/auth", tags=["auth"])
 
 
 # Startup event
@@ -28,8 +29,7 @@ async def log_request(request: Request):
     logger.info(
         f"[{request.client.host}:{request.client.host}] {request.method} {request.url}"
     )
-    logger.info(f"header: {request.headers}, body: ")
-    logger.info(await request.body())
+    logger.info(f"header: {request.headers}")
 
 
 # Log response status code and body

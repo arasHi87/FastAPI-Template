@@ -1,6 +1,6 @@
 from app import APP
 from fastapi import FastAPI
-from tests import RequestBody, ResponseBody, assert_request
+from tests import DEFAULT_USER, RequestBody, ResponseBody, assert_request
 
 """ Test create user endpoint
 @router post /user/
@@ -30,7 +30,7 @@ async def test_create_user_success(app: FastAPI):
 async def test_create_user_exists(app: FastAPI):
     req = RequestBody(
         url=app.url_path_for(name="user:create_user"),
-        body={"name": "default", "email": "default@gmail.com", "password": "default"},
+        body=DEFAULT_USER.__dict__,
     )
     resp = ResponseBody(status_code=400, body={"detail": "User already exists"})
     await assert_request(app=APP, method="POST", req_body=req, resp_body=resp)
@@ -45,17 +45,23 @@ async def test_create_user_exists(app: FastAPI):
 
 
 async def test_get_user_success(app: FastAPI):
-    req = RequestBody(url=app.url_path_for(name="user:get_user", user_id=1), body={})
-    resp = ResponseBody(
-        status_code=200, body={"id": 1, "name": "default", "email": "default@gmail.com"}
-    )
+    req = RequestBody(url=app.url_path_for(name="user:get_user"), body={})
+    resp = ResponseBody(status_code=200, body=DEFAULT_USER.dict())
     await assert_request(app=APP, method="GET", req_body=req, resp_body=resp)
 
 
 async def test_get_user_none_exists(app: FastAPI):
-    req = RequestBody(url=app.url_path_for(name="user:get_user", user_id=100), body={})
+    claims = {
+        "id": 100,
+        "name": DEFAULT_USER.name,
+        "email": DEFAULT_USER.email,
+        "exp": 123,
+    }
+    req = RequestBody(url=app.url_path_for(name="user:get_user"), body={})
     resp = ResponseBody(status_code=404, body={"detail": "User not found"})
-    await assert_request(app=APP, method="GET", req_body=req, resp_body=resp)
+    await assert_request(
+        app=APP, method="GET", req_body=req, resp_body=resp, claims=claims
+    )
 
 
 """ Test update user endpoint
@@ -68,11 +74,11 @@ async def test_get_user_none_exists(app: FastAPI):
 
 async def test_update_user_success(app: FastAPI):
     req = RequestBody(
-        url=app.url_path_for(name="user:update_user", user_id=1),
+        url=app.url_path_for(name="user:update_user"),
         body={
             "name": "test",
             "email": "test@gmail.com",
-            "password": "default",
+            "password": DEFAULT_USER.password,
             "new_password": "test",
         },
     )
@@ -83,8 +89,14 @@ async def test_update_user_success(app: FastAPI):
 
 
 async def test_update_user_none_exists(app: FastAPI):
+    claims = {
+        "id": 100,
+        "name": DEFAULT_USER.name,
+        "email": DEFAULT_USER.email,
+        "exp": 123,
+    }
     req = RequestBody(
-        url=app.url_path_for(name="user:update_user", user_id=100),
+        url=app.url_path_for(name="user:update_user"),
         body={
             "name": "test",
             "email": "test@gmail.com",
@@ -93,12 +105,14 @@ async def test_update_user_none_exists(app: FastAPI):
         },
     )
     resp = ResponseBody(status_code=404, body={"detail": "User not found"})
-    await assert_request(app=APP, method="PUT", req_body=req, resp_body=resp)
+    await assert_request(
+        app=APP, method="PUT", req_body=req, resp_body=resp, claims=claims
+    )
 
 
 async def test_update_user_with_wrong_password(app: FastAPI):
     req = RequestBody(
-        url=app.url_path_for(name="user:update_user", user_id=1),
+        url=app.url_path_for(name="user:update_user"),
         body={
             "name": "test",
             "email": "test@gmail.com",
@@ -112,7 +126,7 @@ async def test_update_user_with_wrong_password(app: FastAPI):
 
 async def test_update_user_with_existing_email(app: FastAPI):
     req = RequestBody(
-        url=app.url_path_for(name="user:update_user", user_id=1),
+        url=app.url_path_for(name="user:update_user"),
         body={
             "name": "meow",
             "email": "test@gmail.com",

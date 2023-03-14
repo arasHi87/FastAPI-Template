@@ -13,7 +13,7 @@ from .base import BaseRepository
 
 class UserRepository(BaseRepository[User, UserCreate, UserUpdate]):
     def _get_hash_password(self, password: str) -> str:
-        salt_pass = "".join([password, Config.PASSWORD_SALT])
+        salt_pass = "".join([password, Config.SECRET_KEY])
         return hashlib.sha256(salt_pass.encode()).hexdigest()
 
     async def create(self, db: AsyncSession, user: UserCreate) -> User:
@@ -48,3 +48,16 @@ class UserRepository(BaseRepository[User, UserCreate, UserUpdate]):
         await db.commit()
         await db.refresh(db_obj)
         return db_obj
+
+    async def authenticate(
+        self, db: AsyncSession, email: str, password: str
+    ) -> Optional[User]:
+        # Check if user exists
+        user = await self.get_by_email(db, email)
+        if not user:
+            return None
+        # Check if password is correct
+        password = self._get_hash_password(password)
+        if password != user.password:
+            return None
+        return user
