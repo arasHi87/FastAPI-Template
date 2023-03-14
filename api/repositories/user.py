@@ -48,3 +48,16 @@ class UserRepository(BaseRepository[User, UserCreate, UserUpdate]):
         await db.commit()
         await db.refresh(db_obj)
         return db_obj
+
+    async def authenticate(
+        self, db: AsyncSession, email: str, password: str
+    ) -> Optional[User]:
+        # Check if user exists
+        user = await self.get_by_email(db, email)
+        if not user:
+            return None
+        # Check if password is correct
+        password = self._get_hash_password(password)
+        if password != user.password:
+            return None
+        return user
