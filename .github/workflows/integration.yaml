@@ -39,15 +39,18 @@ jobs:
           pip3 install poetry
           make init
           pip3 install -U pip setuptools
-          pip3 install poetry
+          pip3 install poetry coverage-badge
 
       - name: Run ci bundle command
         run: |
           make ci-bundle
       
       - name: Coverage Badge
-        uses: tj-actions/coverage-badge-py@v2
         if: success() && github.ref == 'refs/heads/master'
+        working-directory: ${{ inputs.working-directory }}
+        run: |
+          coverage-badge -f -o coverage.svg
+        shell: sh
       
       - name: Verify Changed files
         uses: tj-actions/verify-changed-files@v13
