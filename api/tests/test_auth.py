@@ -17,7 +17,6 @@ from tests import RequestBody, ResponseBody, assert_request
 
 def _test_user_auth_success_assert(resp: Response, expected_resp: ResponseBody):
     body = resp.json()
-    print(body)
     payload: Dict[str, Any] = jwt.decode(
         body["access_token"],
         Config.SECRET_KEY,
