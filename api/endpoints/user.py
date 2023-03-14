@@ -1,7 +1,7 @@
 from typing import Optional
 
 import schemas
-from deps import get_db
+from deps import get_current_user, get_db
 from fastapi import APIRouter, Depends, HTTPException, status
 from models.user import User
 from repositories.user import UserRepository
@@ -54,20 +54,16 @@ GET_USER = {
 
 
 @router.get(
-    "/{user_id}",
+    "/",
     status_code=status.HTTP_200_OK,
     responses=GET_USER,
     response_model=schemas.UserWithoutPassword,
     name="user:get_user",
 )
-async def get_user(user_id: int, db: AsyncSession = Depends(get_db)):
-    user: Optional[User] = await user_repo.get(db, user_id)
-    if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
-        )
-
-    return user
+async def get_user(
+    current_user: schemas.User = Depends(get_current_user),
+):
+    return current_user
 
 
 UPDATE_USER = {
@@ -87,31 +83,26 @@ UPDATE_USER = {
 
 
 @router.put(
-    "/{user_id}",
+    "/",
     status_code=status.HTTP_200_OK,
     responses=UPDATE_USER,
     response_model=schemas.UserWithoutPassword,
     name="user:update_user",
 )
 async def update_user(
-    user_id: int, payload: schemas.UserUpdate, db: AsyncSession = Depends(get_db)
+    payload: schemas.UserUpdate,
+    db: AsyncSession = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_user),
 ):
-    # check if user exists
-    user: Optional[User] = await user_repo.get(db, user_id)
-    if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
-        )
-
     # check if email already exists
     mail_check: Optional[User] = await user_repo.get_by_email(db, payload.email)
-    if mail_check is not None and mail_check.id != user_id:
+    if mail_check is not None and mail_check.id != current_user.id:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Email already exists"
         )
 
     # update user
-    user = await user_repo.update(db, payload, user)
+    user = await user_repo.update(db, payload, current_user)
     return user
 
 
