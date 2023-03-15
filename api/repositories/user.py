@@ -1,7 +1,7 @@
 import hashlib
 from typing import Optional
 
-from config import Config
+from config import settings
 from fastapi import HTTPException, status
 from schemas.user import User, UserCreate, UserUpdate
 from sqlalchemy import false
@@ -13,7 +13,7 @@ from .base import BaseRepository
 
 class UserRepository(BaseRepository[User, UserCreate, UserUpdate]):
     def _get_hash_password(self, password: str) -> str:
-        salt_pass = "".join([password, Config.SECRET_KEY])
+        salt_pass = "".join([password, settings.SECRET_KEY])
         return hashlib.sha256(salt_pass.encode()).hexdigest()
 
     async def create(self, db: AsyncSession, user: UserCreate) -> User:

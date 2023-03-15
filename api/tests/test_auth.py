@@ -1,7 +1,7 @@
 from typing import Any, Dict
 
 import pytest
-from config import Config
+from config import settings
 from fastapi import FastAPI
 from httpx import Response
 from jose import jwt
@@ -19,8 +19,8 @@ def _test_user_auth_success_assert(resp: Response, expected_resp: ResponseBody):
     body = resp.json()
     payload: Dict[str, Any] = jwt.decode(
         body["access_token"],
-        Config.SECRET_KEY,
-        algorithms=[Config.ACCESS_TOKEN_ALGORITHM],
+        settings.SECRET_KEY,
+        algorithms=[settings.ACCESS_TOKEN_ALGORITHM],
     )
 
     assert resp.status_code == expected_resp.status_code

@@ -1,5 +1,5 @@
 import schemas
-from config import Config
+from config import settings
 from db import ASYNC_SESSION
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
@@ -11,7 +11,7 @@ from repositories.user import UserRepository
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{Config.APP_PREFIX}/auth")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.APP_PREFIX}/auth")
 user_repo = UserRepository(User)
 
 
@@ -36,7 +36,7 @@ async def get_current_user(
         [int] @payload.exp:   1620000000
         """
         payload = jwt.decode(
-            token, Config.SECRET_KEY, algorithms=[Config.ACCESS_TOKEN_ALGORITHM]
+            token, settings.SECRET_KEY, algorithms=[settings.ACCESS_TOKEN_ALGORITHM]
         )
         data = schemas.AuthTokenData(**payload)
     except (jwt.JWTError, ValidationError):

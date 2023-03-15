@@ -51,4 +51,3 @@ async def init_table(request):
             password=DEFAULT_USER.password,
         )
         await user_repo.create(conn, user)
-    pass

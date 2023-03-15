@@ -1,11 +1,11 @@
-from config import Config
+from config import settings
 from sqlalchemy.engine import Engine
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 
 ASYNC_ENGINE: Engine = create_async_engine(
-    Config.get_db_url("postgresql+asyncpg"),
+    settings.POSTGRES_DSN,
     pool_size=15,
     max_overflow=5,
     pool_pre_ping=True,

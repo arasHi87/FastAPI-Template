@@ -1,4 +1,4 @@
-from config import Config
+from config import settings
 from endpoints import auth, health, user
 from fastapi import APIRouter, Depends, FastAPI
 from fastapi.requests import Request
@@ -6,10 +6,10 @@ from fastapi.responses import Response
 from loguru import logger
 
 APP = FastAPI(
-    version=Config.APP_VERSION,
-    title=Config.APP_TITLE,
-    description=Config.APP_DESCRIPTION,
-    openapi_url=Config.APP_OPENAPI_URL,
+    version=settings.APP_VERSION,
+    title=settings.APP_TITLE,
+    description=settings.APP_DESCRIPTION,
+    openapi_url=settings.APP_OPENAPI_URL,
 )
 
 ROUTER = APIRouter()
@@ -51,5 +51,5 @@ async def log_response(request: Request, call_next):
 
 
 APP.include_router(
-    ROUTER, prefix=Config.APP_PREFIX, dependencies=[Depends(log_request)]
+    ROUTER, prefix=settings.APP_PREFIX, dependencies=[Depends(log_request)]
 )
