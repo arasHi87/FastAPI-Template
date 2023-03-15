@@ -72,8 +72,8 @@ make lint
 
 ## Roadmap
 
-- [] Add Redis cache
-- [] User Docker multiple stage build
+- [ ] Add Redis cache
+- [ ] User Docker multiple stage build
 
 ## Contribution
 
