@@ -1,10 +1,10 @@
+# FastAPI Template
+
 [![CI](https://github.com/arashi87/fastapi-template/actions/workflows/integration.yaml/badge.svg)](https://github.com/arashi87/fastapi-template/actions/workflows/integration.yaml)
 [![CD](https://github.com/arashi87/fastapi-template/actions/workflows/release.yaml/badge.svg)](https://github.com/arashi87/fastapi-template/actions/workflows/release.yaml)
 ![Coverage](https://github.com/arashi87/fastapi-template/blob/master/coverage.svg)
 
-# FastAPI Template
-
-A simple fastapi template, using postgresql as database.
+A simple restful fastapi template, using PostgreSQL as database and Redis as cache, deployed on Kubernetes with Helm. There is a full CI/CD pipeline, testing and other more tools to implement it.
 
 ## Getting Started
 
@@ -69,6 +69,11 @@ cd api && poetry run uvicorn app:APP --reload --host 0.0.0.0
 make format
 make lint
 ```
+
+## Roadmap
+
+- [] Add Redis cache
+- [] User Docker multiple stage build
 
 ## Contribution
 
