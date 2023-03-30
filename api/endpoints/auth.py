@@ -2,13 +2,11 @@ import schemas
 from deps import get_db
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-from models.user import User
-from repositories.user import UserRepository
+from repositories import user_repo
 from sqlalchemy.ext.asyncio import AsyncSession
 from utils import create_access_token
 
 router = APIRouter()
-user_repo = UserRepository(User)
 
 USER_AUTH = {
     200: {

@@ -4,11 +4,10 @@ import schemas
 from deps import get_current_user, get_db
 from fastapi import APIRouter, Depends, HTTPException, status
 from models.user import User
-from repositories.user import UserRepository
+from repositories import user_repo
 from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter()
-user_repo = UserRepository(User)
 
 CREATE_USER = {
     201: {

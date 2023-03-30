@@ -5,14 +5,12 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
 from loguru import logger
-from models.user import User
 from pydantic import ValidationError
-from repositories.user import UserRepository
+from repositories import user_repo
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.APP_PREFIX}/auth")
-user_repo = UserRepository(User)
 
 
 async def get_db() -> AsyncSession:

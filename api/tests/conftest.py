@@ -9,11 +9,8 @@ from db import ASYNC_SESSION as session
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from models.base import Base
-from models.user import User
-from repositories.user import UserRepository
+from repositories import user_repo
 from tests import DEFAULT_USER
-
-user_repo = UserRepository(User)
 
 
 @pytest.fixture(scope="module")
