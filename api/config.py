@@ -1,12 +1,13 @@
 import sys
 from typing import Any, Dict, Optional
 
+from dotenv import find_dotenv
 from pydantic import BaseSettings, PostgresDsn, validator
 
 
 class Settings(BaseSettings):
     class Config:
-        env_file = ".env"
+        env_file = find_dotenv(usecwd=True)
         env_file_encoding = "utf-8"
 
     """Application configuration"""

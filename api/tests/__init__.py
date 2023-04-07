@@ -1,3 +1,4 @@
+from copy import deepcopy
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, Mapping, Optional
 
@@ -41,12 +42,16 @@ class AssertRequest:
         claims: Optional[Dict[str, Any]] = None,
         assert_func: Callable = None,
         data: Optional[Mapping[str, Any]] = None,
+        header: Optional[Mapping[str, str]] = None,
         *args,
         **kwargs,
     ):
-        header = self.header
-        if claims is not None:
-            header = {"Authorization": f"Bearer {create_access_token(claims=claims)}"}
+        if header is None:
+            header = deepcopy(self.header)
+            if claims is not None:
+                header = {
+                    "Authorization": f"Bearer {create_access_token(claims=claims)}"
+                }
 
         async with AsyncClient(app=app, base_url="https://localhost") as ac:
             resp: Response = await ac.request(
